@@ -558,7 +558,7 @@ class Node(object):
         mobility.parameters_(self)
 
     def setAntennaGain(self, iface, value):
-        wlan = int(iface[-1:])
+        wlan = self.params['wlan'].index(iface)
         self.params['antennaGain'][wlan] = int(value)
         if mobility.DRAW:
             try:
@@ -568,7 +568,7 @@ class Node(object):
         mobility.parameters_(self)
 
     def setTxPower(self, iface, txpower):
-        wlan = int(iface[-1:])
+        wlan = self.params['wlan'].index(iface)
         self.pexec('iwconfig %s txpower %s' % (iface, txpower))
         self.params['txpower'][wlan] = txpower
         mobility.parameters_(self)
@@ -991,7 +991,7 @@ class Node(object):
            prefixLen: prefix length, e.g. 8 for /8 or 16M addrs
            kwargs: any additional arguments for intf.setIP"""
         if intf != None and (self.type == 'station' or self.type == 'vehicle'):
-            wlan = int(intf[-1:])
+            wlan = self.params['wlan'].index(intf)
             self.params['ip'][wlan] = ip
         
         return self.intf(intf).setIP(ip, prefixLen, **kwargs)
